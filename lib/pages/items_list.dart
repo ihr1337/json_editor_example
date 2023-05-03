@@ -8,7 +8,7 @@ class ItemsList extends StatefulWidget {
 }
 
 class _ItemsListState extends State<ItemsList> {
-  List items = [];
+  List items = [1, 2, 3];
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,16 @@ class _ItemsListState extends State<ItemsList> {
             child: SafeArea(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Expanded(
-                child: Column(children: const []),
+              child: Container(
+                height: double.infinity,
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      child: Text('${items[index]}'),
+                    );
+                  },
+                ),
               ),
             )),
           ),
