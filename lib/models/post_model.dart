@@ -43,30 +43,36 @@ class PostsList {
   }
 }
 
-Future<List<Post>> fetchPosts() async {
-  final response =
-      await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+// Future<List<Post>> fetchPosts() async {
+//   final response =
+//       await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
 
-  if (response.statusCode == 200) {
-    final jsonData = json.decode(response.body) as List<dynamic>;
-    return jsonData.map((json) => Post.fromJson(json)).toList();
-  } else {
-    throw Exception('Failed to fetch posts');
-  }
+//   if (response.statusCode == 200) {
+//     final jsonData = json.decode(response.body) as List<dynamic>;
+//     return jsonData.map((json) => Post.fromJson(json)).toList();
+//   } else {
+//     throw Exception('Failed to fetch posts');
+//   }
+// }
+
+class DioClient {
+  final Dio _dio = Dio();
+
+  final _baseUrl = 'https://jsonplaceholder.typicode.com';
 }
 
-// class DioClient {
-//   final Dio _dio = Dio();
+Future<List<Post>> getPosts() async {
+  final dio = DioClient()._dio;
+  final baseUrl = DioClient()._baseUrl;
+  Response getList = await dio.get(baseUrl + '/posts');
 
-//   final _baseUrl = 'https://jsonplaceholder.typicode.com';
-// }
+  print('list: ${getList.data}');
 
-// Future<List<Post>> getUser(int listQuantity) async {
-//   final dio = DioClient()._dio;
-//   final baseUrl = DioClient()._baseUrl;
-//   Response getList = await dio.get(baseUrl + '/posts/$listQuantity');
-
-//   print('list: ${getList.data}');
-
-//   List list = Post.fromJson(getList.data);
-// }
+  List<Post> list = [];
+  for (var item in getList.data) {
+    Post post = Post.fromJson(item);
+    list.add(post);
+  }
+  print(list);
+  return list;
+}

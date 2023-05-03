@@ -16,42 +16,52 @@ class _ItemsListState extends State<ItemsList> {
   void initState() {
     super.initState();
 
-    futureList = fetchPosts();
+    futureList = getPosts();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: CustomScrollView(scrollDirection: Axis.vertical, slivers: [
-        SliverFillRemaining(
-          child: Center(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          getPosts();
+        }),
+        appBar: AppBar(),
+        body: CustomScrollView(scrollDirection: Axis.vertical, slivers: [
+          SliverFillRemaining(
+              child: Center(
             child: SafeArea(
-                child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                  height: double.infinity,
-                  child: FutureBuilder(
-                    future: futureList,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                            itemCount: snapshot.data?.length,
-                            itemBuilder: (context, index) {
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    height: double.infinity,
+                    child: FutureBuilder(
+                      future: futureList,
+                      builder: (BuildContext context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          List<Post> posts = snapshot.data!;
+                          return ListView.builder(
+                            itemCount: posts.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Post post = posts[index];
                               return ListTile(
-                                title: Text('${snapshot.data}'),
+                                title: Text(post.title),
+                                subtitle: Text(post.body),
                               );
-                            });
-                      }
-                      return Container(
-                        child: Text('Snapshot is empty.'),
-                      );
-                    },
+                            },
+                          );
+                        }
+                      },
+                    ),
                   )),
-            )),
-          ),
-        )
-      ]),
-    );
+            ),
+          )),
+        ]));
   }
 }
