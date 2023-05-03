@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class Post {
   final int id;
@@ -31,6 +32,17 @@ class Post {
       };
 }
 
+class PostsList {
+  List<Post> posts;
+  PostsList({required this.posts});
+
+  factory PostsList.fromJson(List<dynamic> json) {
+    List<Post> postsList =
+        json.map((postJson) => Post.fromJson(postJson)).toList();
+    return PostsList(posts: postsList);
+  }
+}
+
 Future<List<Post>> fetchPosts() async {
   final response =
       await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
@@ -42,3 +54,19 @@ Future<List<Post>> fetchPosts() async {
     throw Exception('Failed to fetch posts');
   }
 }
+
+// class DioClient {
+//   final Dio _dio = Dio();
+
+//   final _baseUrl = 'https://jsonplaceholder.typicode.com';
+// }
+
+// Future<List<Post>> getUser(int listQuantity) async {
+//   final dio = DioClient()._dio;
+//   final baseUrl = DioClient()._baseUrl;
+//   Response getList = await dio.get(baseUrl + '/posts/$listQuantity');
+
+//   print('list: ${getList.data}');
+
+//   List list = Post.fromJson(getList.data);
+// }

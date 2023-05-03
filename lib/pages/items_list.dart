@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:json_editor_example/models/post_model.dart';
+
 class ItemsList extends StatefulWidget {
   const ItemsList({super.key});
 
@@ -8,7 +10,14 @@ class ItemsList extends StatefulWidget {
 }
 
 class _ItemsListState extends State<ItemsList> {
-  List items = [1, 2, 3];
+  late Future<List<Post>> futureList;
+
+  @override
+  void initState() {
+    super.initState();
+
+    futureList = fetchPosts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +29,25 @@ class _ItemsListState extends State<ItemsList> {
             child: SafeArea(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Container(
-                height: double.infinity,
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      child: Text('${items[index]}'),
-                    );
-                  },
-                ),
-              ),
+              child: SizedBox(
+                  height: double.infinity,
+                  child: FutureBuilder(
+                    future: futureList,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text('${snapshot.data}'),
+                              );
+                            });
+                      }
+                      return Container(
+                        child: Text('Snapshot is empty.'),
+                      );
+                    },
+                  )),
             )),
           ),
         )
