@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:json_editor_example/constants/constants.dart';
 
-import '../dio/dio.dart';
-import '../models/post_model.dart';
+import '../redux/store.dart';
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key, required this.data});
@@ -13,30 +11,68 @@ class ItemDetails extends StatefulWidget {
 }
 
 class _ItemDetailsState extends State<ItemDetails> {
-  late int id;
-  late Future<List<Post>> futureList;
+  late int index;
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController bodyController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    id = widget.data;
-    futureList = DioClient().getPosts(baseUrl);
+    index = widget.data;
+    titleController.text = store.state.posts[index].title;
+    bodyController.text = store.state.posts[index].body;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Item index #$id'),
+          title: Text('Item index #$index'),
         ),
         body: CustomScrollView(scrollDirection: Axis.vertical, slivers: [
           SliverFillRemaining(
               child: Center(
             child: SafeArea(
-              child: SizedBox(
-                height: double.infinity,
-                child: Column(
-                  children: const [Text('template text')],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  height: double.infinity,
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Edit items:',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Row(children: [
+                        Expanded(
+                          child: TextField(
+                            maxLines: null,
+                            controller: titleController,
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.send))
+                      ]),
+                      Row(children: [
+                        Expanded(
+                          child: TextField(
+                            maxLines: null,
+                            controller: bodyController,
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.send))
+                      ]),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text('Item ID: ${store.state.posts[index].id.toString()}')
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -59,7 +59,7 @@ class _ItemsListState extends State<ItemsList> {
                           return ListTile(
                             onTap: () => Modular.to.pushNamed(
                               '/list/item',
-                              arguments: post.id,
+                              arguments: index,
                             ),
                             title: Text(post.title),
                             subtitle: Text(post.body),
