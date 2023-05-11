@@ -48,26 +48,20 @@ class _ItemDetailsState extends State<ItemDetails> {
                       const SizedBox(
                         height: 50,
                       ),
-                      Row(children: [
-                        Expanded(
-                          child: TextField(
-                            maxLines: null,
-                            controller: titleController,
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: editItem, icon: const Icon(Icons.send))
-                      ]),
-                      Row(children: [
-                        Expanded(
-                          child: TextField(
-                            maxLines: null,
-                            controller: bodyController,
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: editItem, icon: const Icon(Icons.send))
-                      ]),
+                      TextField(
+                        maxLines: null,
+                        controller: titleController,
+                      ),
+                      TextField(
+                        maxLines: null,
+                        controller: bodyController,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      ElevatedButton(
+                          onPressed: editItem,
+                          child: const Text('Update item')),
                       const SizedBox(
                         height: 30,
                       ),
