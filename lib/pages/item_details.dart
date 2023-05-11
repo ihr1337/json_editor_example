@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../redux/actions.dart';
 import '../redux/store.dart';
 
 class ItemDetails extends StatefulWidget {
@@ -55,7 +56,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                           ),
                         ),
                         IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.send))
+                            onPressed: editItem, icon: const Icon(Icons.send))
                       ]),
                       Row(children: [
                         Expanded(
@@ -65,7 +66,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                           ),
                         ),
                         IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.send))
+                            onPressed: editItem, icon: const Icon(Icons.send))
                       ]),
                       const SizedBox(
                         height: 30,
@@ -78,5 +79,12 @@ class _ItemDetailsState extends State<ItemDetails> {
             ),
           )),
         ]));
+  }
+
+  void editItem() {
+    final String newTitle = titleController.text;
+    final String newBody = bodyController.text;
+
+    store.dispatch(EditItemAction(index, newTitle, newBody));
   }
 }

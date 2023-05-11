@@ -9,6 +9,18 @@ class Post {
     required this.body,
   });
 
+  Post copyWith({
+    int? id,
+    String? title,
+    String? body,
+  }) {
+    return Post(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      body: body ?? this.body,
+    );
+  }
+
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
       id: json['id'],

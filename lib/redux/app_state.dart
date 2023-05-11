@@ -1,5 +1,5 @@
-import 'package:json_editor_example/dio/dio.dart';
-import 'package:json_editor_example/models/post_model.dart';
+import '../dio/dio.dart';
+import '../models/post_model.dart';
 
 class AppState {
   List<Post> posts;
@@ -10,4 +10,11 @@ class AppState {
   AppState.initialState()
       : posts = DioClient().list,
         isLoading = false;
+
+  AppState copyWith({List<Post>? posts, bool? isLoading}) {
+    return AppState(
+      posts: posts ?? this.posts,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
 }

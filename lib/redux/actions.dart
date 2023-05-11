@@ -11,3 +11,11 @@ class SetLoadingAction {
 
   SetLoadingAction(this.isLoading);
 }
+
+class EditItemAction {
+  final int index;
+  final String newTitle;
+  final String newBody;
+
+  EditItemAction(this.index, this.newTitle, this.newBody);
+}
