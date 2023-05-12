@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../dio/dio.dart';
 import '../redux/actions.dart';
 import '../redux/store.dart';
 
@@ -13,6 +14,7 @@ class ItemDetails extends StatefulWidget {
 
 class _ItemDetailsState extends State<ItemDetails> {
   late int index;
+  late int itemId;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
@@ -23,6 +25,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     index = widget.data;
     titleController.text = store.state.posts[index].title;
     bodyController.text = store.state.posts[index].body;
+    itemId = store.state.posts[index].id;
   }
 
   @override
@@ -59,9 +62,23 @@ class _ItemDetailsState extends State<ItemDetails> {
                       const SizedBox(
                         height: 30,
                       ),
-                      ElevatedButton(
-                          onPressed: editItem,
-                          child: const Text('Update item')),
+                      Column(
+                        children: [
+                          ElevatedButton(
+                              onPressed: () => editItemApi(index,
+                                  titleController.text, bodyController.text),
+                              child: const Text(
+                                'Update item with API query',
+                                style: TextStyle(),
+                              )),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          ElevatedButton(
+                              onPressed: () => editItem(),
+                              child: const Text('Update item locally')),
+                        ],
+                      ),
                       const SizedBox(
                         height: 30,
                       ),
@@ -79,6 +96,18 @@ class _ItemDetailsState extends State<ItemDetails> {
     final String newTitle = titleController.text;
     final String newBody = bodyController.text;
 
-    store.dispatch(EditItemAction(index, newTitle, newBody));
+    store.dispatch(EditItemAction(itemId, newTitle, newBody));
+  }
+}
+
+Future<void> editItemApi(int itemId, String newTitle, String newBody) async {
+  try {
+    // Make the API request to update the item
+    await DioClient().updateItem(itemId, newTitle, newBody);
+
+    // If the API request is successful, dispatch the EditItemAction to update the state
+    store.dispatch(EditItemAction(itemId, newTitle, newBody));
+  } catch (error) {
+    print(error);
   }
 }
