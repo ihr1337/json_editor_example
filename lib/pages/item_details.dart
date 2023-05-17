@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 import '../dio/dio.dart';
@@ -76,18 +78,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                               style: TextStyle(),
                             ),
                           ),
-                          const SizedBox(
-                            width: 30,
-                          ),
+                          const SizedBox(width: 30),
                           ElevatedButton(
                             onPressed: () => editItem(),
                             child: const Text('Update item locally'),
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      const SizedBox(height: 30),
                       Text('Item ID: ${store.state.posts[index].id.toString()}')
                     ],
                   ),

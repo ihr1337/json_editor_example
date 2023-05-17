@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:dio/dio.dart';
 import 'package:json_editor_example/constants/constants.dart';
 
@@ -22,12 +24,8 @@ class DioClient {
     final String url = '$baseUrl/$itemId';
     _dio.patch(url, data: {'title': title, 'body': body}).then((response) {
       print('Update Item API Response: $response');
-      // Handle the API response
-      // ...
     }).catchError((error) {
       print('Update Item API Error: $error');
-      // Handle errors
-      // ...
     });
   }
 }
