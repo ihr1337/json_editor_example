@@ -20,7 +20,7 @@ class DioClient {
 
   Future<void> updateItem(int itemId, String title, String body) async {
     final String url = '$baseUrl/$itemId';
-    _dio.put(url, data: {'title': title, 'body': body}).then((response) {
+    _dio.patch(url, data: {'title': title, 'body': body}).then((response) {
       print('Update Item API Response: $response');
       // Handle the API response
       // ...

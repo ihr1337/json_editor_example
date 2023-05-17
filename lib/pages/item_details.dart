@@ -29,6 +29,14 @@ class _ItemDetailsState extends State<ItemDetails> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    bodyController.dispose();
+    print('dispose');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -48,9 +56,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         'Edit items:',
                         style: TextStyle(fontSize: 30),
                       ),
-                      const SizedBox(
-                        height: 50,
-                      ),
+                      const SizedBox(height: 50),
                       TextField(
                         maxLines: null,
                         controller: titleController,
@@ -59,24 +65,24 @@ class _ItemDetailsState extends State<ItemDetails> {
                         maxLines: null,
                         controller: bodyController,
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      const SizedBox(height: 30),
                       Column(
                         children: [
                           ElevatedButton(
-                              onPressed: () => editItemApi(index,
-                                  titleController.text, bodyController.text),
-                              child: const Text(
-                                'Update item with API query',
-                                style: TextStyle(),
-                              )),
+                            onPressed: () => editItemApi(index,
+                                titleController.text, bodyController.text),
+                            child: const Text(
+                              'Update item with API query',
+                              style: TextStyle(),
+                            ),
+                          ),
                           const SizedBox(
                             width: 30,
                           ),
                           ElevatedButton(
-                              onPressed: () => editItem(),
-                              child: const Text('Update item locally')),
+                            onPressed: () => editItem(),
+                            child: const Text('Update item locally'),
+                          ),
                         ],
                       ),
                       const SizedBox(

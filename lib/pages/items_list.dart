@@ -54,7 +54,7 @@ class _ItemsListState extends State<ItemsList> {
                     } else {
                       return ListView.builder(
                         itemCount: store.state.posts.length,
-                        itemBuilder: (context, int index) {
+                        itemBuilder: (BuildContext context, int index) {
                           Post post = store.state.posts[index];
                           return ListTile(
                             onTap: () => Modular.to.pushNamed(
