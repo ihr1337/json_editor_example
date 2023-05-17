@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../dio/dio.dart';
 import '../redux/actions.dart';
 import '../redux/store.dart';
 
@@ -71,7 +70,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                       Column(
                         children: [
                           ElevatedButton(
-                            onPressed: () => editItemApi(index,
+                            onPressed: () => editItemThunk(index,
                                 titleController.text, bodyController.text),
                             child: const Text(
                               'Update item with API query',
@@ -101,17 +100,5 @@ class _ItemDetailsState extends State<ItemDetails> {
     final String newBody = bodyController.text;
 
     store.dispatch(EditItemAction(itemId, newTitle, newBody));
-  }
-}
-
-Future<void> editItemApi(int itemId, String newTitle, String newBody) async {
-  try {
-    // Make the API request to update the item
-    await DioClient().updateItem(itemId, newTitle, newBody);
-
-    // If the API request is successful, dispatch the EditItemAction to update the state
-    store.dispatch(EditItemAction(itemId, newTitle, newBody));
-  } catch (error) {
-    print(error);
   }
 }
